@@ -40,6 +40,7 @@ class ganglia::gmond (
   String $gmond_service_name                        = $ganglia::params::gmond_service_name,
   String $gmond_service_config                      = $ganglia::params::gmond_service_config,
   String $gmond_status_command                      = $ganglia::params::gmond_status_command,
+  String $gmond_user                                = $ganglia::params::gmond_user,
 ) inherits ganglia::params {
 
   if ($ganglia::params::gmond_status_command) {

@@ -61,6 +61,7 @@ class ganglia::params {
             '6', '7', '8': {
               $gmond_service_config = '/etc/ganglia/gmond.conf'
               $gmetad_user          = 'ganglia'
+              $gmond_user           = 'nobody'
               $gmond_service_erb    = 'ganglia/gmond.conf.el6.erb'
 
               $gmetad_service_config  = '/etc/ganglia/gmetad.conf'
@@ -83,6 +84,7 @@ class ganglia::params {
       $gmetad_package_name   = 'ganglia-gmetad'
       $gmetad_service_name   = 'gmetad'
       $gmetad_user           = 'nobody'
+      $gmond_user            = 'ganglia'
 
       $web_package_name      = 'ganglia-webfrontend'
       $web_php_config        = '/usr/share/ganglia-webfrontend/conf.php'
