@@ -31,7 +31,7 @@ class ganglia::params {
   $gmetad_service_erb    = 'ganglia/gmetad.conf.erb'
   $default_gmetad_status  = 'pgrep -u ganglia -f /usr/sbin/gmetad'
   $default_gmond_status   = 'pgrep -u ganglia -f /usr/sbin/gmond'
-  $gmond_service_manage_state   = false
+  $gmond_service_manage_state   = true
 
   case $facts['osfamily'] {
     'redhat': {
