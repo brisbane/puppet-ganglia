@@ -50,9 +50,16 @@ class ganglia::gmond (
     $hasstatus = true
   }
 
+  if $gmond_service_manage_state {
+      $notify_list = [Service["$gmond_service_name"]]
+  }
+  else {
+      $notify_list = []
+  }
+
   package { $gmond_package_name:
     ensure => $gmond_package_ensure,
- #   notify => Service[$gmond_service_name],
+    notify => $notify_list,
   }
 
   file { $gmond_service_config:
@@ -62,7 +69,7 @@ class ganglia::gmond (
     mode    => '0644',
     content => template($ganglia::params::gmond_service_erb),
     require => Package[$gmond_package_name], 
-#    notify  => Service[$gmond_service_name]
+    notify  => $notify_list,
   }
   if $gmond_service_manage_state {
   service { $gmond_service_name:
@@ -71,7 +78,6 @@ class ganglia::gmond (
     hasrestart => true,
     enable     => true,
     status     => $gmond_status_command,
-    subscribe => [ Package["$gmond_package_name"] , File["$gmond_service_config"]  ]
   }
   }
 }
