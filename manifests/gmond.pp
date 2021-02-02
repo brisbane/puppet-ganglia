@@ -39,6 +39,7 @@ class ganglia::gmond (
   String $gmond_package_ensure                      = 'present',
   String $gmond_service_name                        = $ganglia::params::gmond_service_name,
   String $gmond_service_config                      = $ganglia::params::gmond_service_config,
+  Boolean $gmond_service_manage_state                = $ganglia::params::gmond_service_manage_state,
   String $gmond_status_command                      = $ganglia::params::gmond_status_command,
   String $gmond_user                                = $ganglia::params::gmond_user,
 ) inherits ganglia::params {
@@ -51,7 +52,7 @@ class ganglia::gmond (
 
   package { $gmond_package_name:
     ensure => $gmond_package_ensure,
-    notify => Service[$gmond_service_name],
+ #   notify => Service[$gmond_service_name],
   }
 
   file { $gmond_service_config:
@@ -60,14 +61,17 @@ class ganglia::gmond (
     group   => 'root',
     mode    => '0644',
     content => template($ganglia::params::gmond_service_erb),
-    require => Package[$gmond_package_name],
-    notify  => Service[$gmond_service_name]
+    require => Package[$gmond_package_name], 
+#    notify  => Service[$gmond_service_name]
   }
+  if $gmond_service_manage_state {
   service { $gmond_service_name:
     ensure     => running,
     hasstatus  => $hasstatus,
     hasrestart => true,
     enable     => true,
     status     => $gmond_status_command,
+    subscribe => [ Package["$gmond_package_name"] , File["$gmond_service_config"]  ]
+  }
   }
 }
